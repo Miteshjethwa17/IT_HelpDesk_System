@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, session, url_for, m
 from database import db
 import ticket
 import secrets
+import os
 from datetime import datetime, timedelta
 app = Flask(__name__)
-app.secret_key = "helpdesk_secret_key"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 @app.context_processor
 def inject_theme():
