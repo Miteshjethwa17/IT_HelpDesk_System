@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | IT HelpDesk</title>
+
+
+    <!-- ================= MAIN CSS ================= -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+
+    <!-- ================= FONT AWESOME ================= -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        /* =====================================================
+           NOTIFICATION PAGE
+        ===================================================== */
+
+        .notifications-container {
+
+            margin-top: 30px;
+
+        }
+
+
+        /* =====================================================
+           NOTIFICATION LINK
+        ===================================================== */
+
+        .notification-link {
+
+            text-decoration: none;
+
+            color: inherit;
+
+            display: block;
+
+        }
+
+
+        /* =====================================================
+           NOTIFICATION CARD
+        ===================================================== */
+
+        .notification-card {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 28px;
+
+            background: #ffffff;
+
+            padding: 35px 40px;
+
+            border-radius: 22px;
+
+            border-left: 6px solid #2563eb;
+
+            box-shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
+
+            margin-bottom: 22px;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+
+            cursor: pointer;
+
+        }
+
+
+        .notification-card:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 18px 40px rgba(37, 99, 235, 0.15);
+
+            background: #f8fbff;
+
+        }
+
+
+        /* =====================================================
+           NOTIFICATION ICON
+        ===================================================== */
+
+        .notification-icon {
+
+            width: 78px;
+
+            height: 78px;
+
+            min-width: 78px;
+
+            border-radius: 50%;
+
+            background: #2563eb;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+        }
+
+
+        /* =====================================================
+           NOTIFICATION CONTENT
+        ===================================================== */
+
+        .notification-content {
+
+            flex: 1;
+
+        }
+
+
+        .notification-content h3 {
+
+            margin: 0 0 12px;
+
+            font-size: 25px;
+
+            color: #0f172a;
+
+        }
+
+
+        .notification-content p {
+
+            margin: 0 0 18px;
+
+            font-size: 18px;
+
+            color: #64748b;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           DATE
+        ===================================================== */
+
+        .notification-date {
+
+            display: block;
+
+            color: #94a3b8;
+
+            font-size: 15px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* =====================================================
+           NEW BADGE
+        ===================================================== */
+
+        .notification-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background: #dbeafe;
+
+            color: #2563eb;
+
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .notification-badge span {
+
+            width: 9px;
+
+            height: 9px;
+
+            background: #2563eb;
+
+            border-radius: 50%;
+
+        }
+
+
+        /* =====================================================
+           READ BADGE
+        ===================================================== */
+
+        .notification-read {
+
+            display: inline-block;
+
+            background: #e2e8f0;
+
+            color: #64748b;
+
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           EMPTY NOTIFICATIONS
+        ===================================================== */
+
+        .no-notifications {
+
+            background: #ffffff;
+
+            border-radius: 22px;
+
+            padding: 70px 30px;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 30px rgba(15, 23, 42, 0.07);
+
+        }
+
+
+        .no-notifications i {
+
+            font-size: 55px;
+
+            color: #94a3b8;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .no-notifications h3 {
+
+            margin: 0 0 10px;
+
+            font-size: 24px;
+
+            color: #0f172a;
+
+        }
+
+
+        .no-notifications p {
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 17px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .notification-card {
+
+                padding: 25px;
+
+                gap: 18px;
+
+            }
+
+
+            .notification-icon {
+
+                width: 60px;
+
+                height: 60px;
+
+                min-width: 60px;
+
+                font-size: 23px;
+
+            }
+
+
+            .notification-content h3 {
+
+                font-size: 20px;
+
+            }
+
+
+            .notification-content p {
+
+                font-size: 16px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .notification-card {
+
+                flex-direction: column;
+
+            }
+
+
+            .notification-icon {
+
+                width: 55px;
+
+                height: 55px;
+
+                min-width: 55px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode .notification-card {
+
+            background: #1e293b;
+
+            border-left-color: #3b82f6;
+
+        }
+
+
+        body.dark-mode .notification-card:hover {
+
+            background: #263449;
+
+        }
+
+
+        body.dark-mode .notification-content h3 {
+
+            color: #f8fafc;
+
+        }
+
+
+        body.dark-mode .notification-content p {
+
+            color: #cbd5e1;
+
+        }
+
+
+        body.dark-mode .notification-date {
+
+            color: #94a3b8;
+
+        }
+
+
+        body.dark-mode .no-notifications {
+
+            background: #1e293b;
+
+        }
+
+
+        body.dark-mode .no-notifications h3 {
+
+            color: #f8fafc;
+
+        }
+
+
+        body.dark-mode .no-notifications p {
+
+            color: #cbd5e1;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+
+<div class="wrapper">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <ul>
+
+
+            <!-- DASHBOARD -->
+
+            <li>
+
+                <a href="{{ url_for('dashboard') }}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <li class="active">
+
+                <a href="{{ url_for('notifications') }}">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span>Notifications</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- LOGOUT -->
+
+            <li>
+
+                <a href="{{ url_for('logout') }}">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================= -->
+
+        <div class="topbar">
+
+
+            <!-- LEFT -->
+
+            <div class="top-left">
+
+                <h2>
+
+                    Notifications
+
+                    {% if notifications %}
+
+                        <span style="
+                            background:#2563eb;
+                            color:white;
+                            font-size:14px;
+                            padding:6px 10px;
+                            border-radius:20px;
+                            vertical-align:middle;
+                            margin-left:8px;
+                        ">
+
+                            {{ notifications|length }}
+
+                        </span>
+
+                    {% endif %}
+
+                </h2>
+
+
+                <small>
+
+                    Stay updated with your latest HelpDesk activities
+
+                </small>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="top-right">
+
+
+                <div class="profile">
+
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+
+                    <div>
+
+
+                        <strong>
+
+                            {{ session.get("user_name", "Admin User") }}
+
+                        </strong>
+
+
+                        <small>
+
+                            {{ session.get("role", "Admin") }}
+
+                        </small>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             NOTIFICATIONS
+        ================================================= -->
+
+        <div class="notifications-container">
+
+
+            {% for notification in notifications %}
+
+
+                <!-- =========================================
+                     CLICKABLE NOTIFICATION
+                ========================================== -->
+
+                <a href="{{ url_for(
+                    'open_notification',
+                    notification_id=notification.NotificationID
+                ) }}"
+                   class="notification-link">
+
+
+                    <div class="notification-card">
+
+
+                        <!-- ICON -->
+
+                        <div class="notification-icon">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        </div>
+
+
+                        <!-- CONTENT -->
+
+                        <div class="notification-content">
+
+
+                            <!-- TITLE -->
+
+                            <h3>
+
+                                {{ notification.Title }}
+
+                            </h3>
+
+
+                            <!-- MESSAGE -->
+
+                            <p>
+
+                                {{ notification.Message }}
+
+                            </p>
+
+
+                            <!-- DATE -->
+
+                            <span class="notification-date">
+
+                                <i class="fa-regular fa-clock"></i>
+
+                                {{ notification.CreatedAt }}
+
+                            </span>
+
+
+                            <!-- STATUS -->
+
+                            {% if notification.IsRead == 0 %}
+
+
+                                <span class="notification-badge">
+
+                                    <span></span>
+
+                                    New
+
+                                </span>
+
+
+                            {% else %}
+
+
+                                <span class="notification-read">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                    Read
+
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </a>
+
+
+            {% else %}
+
+
+                <!-- =========================================
+                     NO NOTIFICATIONS
+                ========================================== -->
+
+                <div class="no-notifications">
+
+
+                    <i class="fa-regular fa-bell-slash"></i>
+
+
+                    <h3>
+
+                        No Notifications
+
+                    </h3>
+
+
+                    <p>
+
+                        You're all caught up!
+
+                    </p>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </main>
+
+     <script>
+    window.addEventListener("pageshow", function (event) {
+
+        if (event.persisted) {
+            window.location.reload();
+        }
+
+    });
+</script>
+</div>
+
+
+</body>
+
+</html>

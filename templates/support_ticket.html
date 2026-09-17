@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Support Ticket | HelpDesk</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* ===============================
+           SUPPORT TICKET PAGE
+        =============================== */
+
+        .support-ticket-card {
+            max-width: 1100px;
+            margin-top: 25px;
+            padding: 35px;
+        }
+
+        /* Header */
+
+        .support-ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .ticket-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2563eb;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .support-ticket-header h2 {
+            margin: 0;
+            font-size: 30px;
+            color: #172554;
+        }
+
+        /* Status */
+
+        .ticket-status-badge {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-open {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-pending {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-progress {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-resolved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-default {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* Ticket Info */
+
+        .ticket-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 25px 0 35px;
+        }
+
+        .ticket-info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ticket-info-box > i {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 12px;
+            font-size: 18px;
+        }
+
+        .ticket-info-box small {
+            display: block;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .ticket-info-box strong {
+            color: #172554;
+            font-size: 16px;
+        }
+
+        /* Section */
+
+        .ticket-section {
+            margin-top: 35px;
+        }
+
+        .ticket-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #172554;
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .ticket-section-title i {
+            color: #2563eb;
+        }
+
+        /* Description */
+
+        .description-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 22px;
+            color: #334155;
+            line-height: 1.7;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        /* Update Box */
+
+        .update-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+        .form-group label i {
+            color: #2563eb;
+            margin-right: 7px;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        /* Buttons */
+
+        .ticket-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .update-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e2e8f0;
+            color: #334155;
+            padding: 13px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #cbd5e1;
+            color: #1e293b;
+        }
+
+        /* Comments */
+
+        .comment-history {
+            margin-top: 40px;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+        }
+
+        .comment-avatar {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .comment-header strong {
+            color: #172554;
+        }
+
+        .comment-header small {
+            color: #64748b;
+        }
+
+        .comment-content p {
+            margin: 0;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 35px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 15px;
+            color: #64748b;
+        }
+
+        .no-comments i {
+            font-size: 35px;
+            margin-bottom: 10px;
+            color: #94a3b8;
+        }
+
+        .no-comments p {
+            margin: 5px 0;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+
+            .ticket-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .support-ticket-header {
+                flex-direction: column;
+            }
+
+            .ticket-actions {
+                flex-direction: column;
+            }
+
+            .update-btn,
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .comment-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .support-ticket-card {
+                padding: 20px;
+            }
+
+        }
+        /* =========================================
+   SUPPORT TICKET DARK MODE
+========================================= */
+
+body.dark-mode .support-ticket-card {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .support-ticket-header h2 {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .ticket-info-box {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .ticket-info-box small {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .ticket-info-box strong {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .ticket-section-title {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .description-box {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .update-box {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .form-group label {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .form-group select option {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .form-group textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .comment-item {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .comment-header strong {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .comment-header small {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .comment-content p {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .no-comments {
+    background: #0f172a !important;
+    border-color: #475569 !important;
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .back-btn {
+    background: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .back-btn:hover {
+    background: #475569 !important;
+    color: #ffffff !important;
+}
+
+    </style>
+
+</head>
+
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+
+<div class="wrapper">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <ul>
+
+            <li>
+
+                <a href="/support-dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <li class="active">
+
+                <a href="#">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span>Ticket Details</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <div class="top-left">
+
+                <h2>Support Ticket</h2>
+
+                <small>
+                    Manage ticket status and communicate with the employee
+                </small>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ session["user_name"] }}
+                        </strong>
+
+                        <small>
+                            {{ session["role"] }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= TICKET CARD ================= -->
+
+        <div class="settings-card support-ticket-card">
+
+
+            <!-- HEADER -->
+
+            <div class="support-ticket-header">
+
+                <div>
+
+                    <span class="ticket-label">
+
+                        <i class="fa-solid fa-ticket"></i>
+
+                        Ticket #{{ ticket.TicketID }}
+
+                    </span>
+
+                    <h2>
+                        {{ ticket.Title }}
+                    </h2>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div>
+
+                    {% if ticket.Status == "Open" %}
+
+                        <span class="ticket-status-badge status-open">
+                            <i class="fa-solid fa-circle"></i>
+                            Open
+                        </span>
+
+                    {% elif ticket.Status == "Pending" %}
+
+                        <span class="ticket-status-badge status-pending">
+                            <i class="fa-solid fa-clock"></i>
+                            Pending
+                        </span>
+
+                    {% elif ticket.Status == "In Progress" %}
+
+                        <span class="ticket-status-badge status-progress">
+                            <i class="fa-solid fa-spinner"></i>
+                            In Progress
+                        </span>
+
+                    {% elif ticket.Status == "Resolved" %}
+
+                        <span class="ticket-status-badge status-resolved">
+                            <i class="fa-solid fa-check"></i>
+                            Resolved
+                        </span>
+
+                    {% else %}
+
+                        <span class="ticket-status-badge status-default">
+                            {{ ticket.Status }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= INFO ================= -->
+
+            <div class="ticket-info-grid">
+
+
+                <div class="ticket-info-box">
+
+                    <i class="fa-solid fa-flag"></i>
+
+                    <div>
+
+                        <small>Priority</small>
+
+                        <strong>
+                            {{ ticket.Priority }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-info-box">
+
+                    <i class="fa-solid fa-hashtag"></i>
+
+                    <div>
+
+                        <small>Ticket ID</small>
+
+                        <strong>
+                            #{{ ticket.TicketID }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-info-box">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <div>
+
+                        <small>Current Status</small>
+
+                        <strong>
+                            {{ ticket.Status }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= DESCRIPTION ================= -->
+
+            <div class="ticket-section">
+
+                <h3 class="ticket-section-title">
+
+                    <i class="fa-solid fa-align-left"></i>
+
+                    Ticket Description
+
+                </h3>
+
+
+                <div class="description-box">
+
+                    {{ ticket.Description }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= UPDATE ================= -->
+
+            <div class="ticket-section">
+
+                <h3 class="ticket-section-title">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                    Update Ticket
+
+                </h3>
+
+
+                <div class="update-box">
+
+                    <form method="POST">
+
+
+                        <!-- STATUS -->
+
+                        <div class="form-group">
+
+                            <label>
+
+                                <i class="fa-solid fa-list-check"></i>
+
+                                Update Status
+
+                            </label>
+
+
+                            <select name="status" required>
+
+                                <option value="Open"
+                                {% if ticket.Status == "Open" %}selected{% endif %}>
+                                    Open
+                                </option>
+
+                                <option value="Pending"
+                                {% if ticket.Status == "Pending" %}selected{% endif %}>
+                                    Pending
+                                </option>
+
+                                <option value="In Progress"
+                                {% if ticket.Status == "In Progress" %}selected{% endif %}>
+                                    In Progress
+                                </option>
+
+                                <option value="Resolved"
+                                {% if ticket.Status == "Resolved" %}selected{% endif %}>
+                                    Resolved
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- COMMENT -->
+
+                        <div class="form-group">
+
+                            <label>
+
+                                <i class="fa-solid fa-comment"></i>
+
+                                Add Comment
+
+                            </label>
+
+
+                            <textarea
+                                name="comment"
+                                placeholder="Write your comment or update..."
+                                rows="5"></textarea>
+
+                        </div>
+
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="ticket-actions">
+
+                            <button
+                                type="submit"
+                                class="update-btn">
+
+                                <i class="fa-solid fa-floppy-disk"></i>
+
+                                Update Ticket
+
+                            </button>
+
+
+                            <a
+                                href="/support-dashboard"
+                                class="back-btn">
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                Back to Dashboard
+
+                            </a>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= COMMENT HISTORY ================= -->
+
+            <div class="comment-history">
+
+
+                <h3 class="ticket-section-title">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    Comment History
+
+                </h3>
+
+
+                {% if comments %}
+
+
+                    <div class="comments-list">
+
+
+                        {% for c in comments %}
+
+
+                            <div class="comment-item">
+
+
+                                <div class="comment-avatar">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </div>
+
+
+                                <div class="comment-content">
+
+
+                                    <div class="comment-header">
+
+                                        <strong>
+                                            {{ c.FullName }}
+                                        </strong>
+
+
+                                        <small>
+
+                                            <i class="fa-regular fa-clock"></i>
+
+                                            {{ c.CreatedAt }}
+
+                                        </small>
+
+                                    </div>
+
+
+                                    <p>
+                                        {{ c.Comment }}
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="no-comments">
+
+                        <i class="fa-regular fa-comment-dots"></i>
+
+                        <p>
+                            No comments yet.
+                        </p>
+
+                        <small>
+                            Add a comment above to start communication.
+                        </small>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - IT HelpDesk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+<div class="wrapper">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="/dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/create-ticket">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Create Ticket</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/view-tickets">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Tickets</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/users">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="/reports">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="top-left">
+
+                <h2>Reports</h2>
+
+                <small>
+                    Ticket Management Reports
+                </small>
+
+            </div>
+
+            <div class="top-right">
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ session["user_name"] }}
+                        </strong>
+
+                        <small>
+                            {{ session["role"] }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= WELCOME BANNER ================= -->
+
+        <div class="welcome-banner">
+
+            <div>
+
+                <h2>
+                    Ticket Reports 📊
+                </h2>
+
+                <p>
+                    View overall ticket status and priority statistics.
+                </p>
+
+            </div>
+
+            <div class="welcome-icon">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= REPORT CARDS ================= -->
+
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card total">
+
+                <div>
+
+                    <h5>Total Tickets</h5>
+
+                    <h2>{{ total }}</h2>
+
+                </div>
+
+                <i class="fa-solid fa-ticket"></i>
+
+            </div>
+
+
+            <div class="dashboard-card open">
+
+                <div>
+
+                    <h5>Open Tickets</h5>
+
+                    <h2>{{ open_tickets }}</h2>
+
+                </div>
+
+                <i class="fa-solid fa-folder-open"></i>
+
+            </div>
+
+
+            <div class="dashboard-card pending">
+
+                <div>
+
+                    <h5>Pending Tickets</h5>
+
+                    <h2>{{ pending }}</h2>
+
+                </div>
+
+                <i class="fa-solid fa-clock"></i>
+
+            </div>
+
+
+            <div class="dashboard-card resolved">
+
+                <div>
+
+                    <h5>Resolved Tickets</h5>
+
+                    <h2>{{ resolved }}</h2>
+
+                </div>
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= REPORT SECTION ================= -->
+
+        <div class="chart-row">
+
+            <!-- STATUS REPORT -->
+
+            <div class="chart-box">
+
+                <div class="box-header">
+
+                    <h3>
+                        <i class="fa-solid fa-chart-pie"></i>
+                        Ticket Status Report
+                    </h3>
+
+                </div>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Status</th>
+                            <th>Total Tickets</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-warning">
+                                    Open
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ open_tickets }}</strong>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-danger">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ pending }}</strong>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Resolved
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ resolved }}</strong>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- PRIORITY REPORT -->
+
+            <div class="chart-box">
+
+                <div class="box-header">
+
+                    <h3>
+                        <i class="fa-solid fa-layer-group"></i>
+                        Priority Report
+                    </h3>
+
+                </div>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Priority</th>
+                            <th>Total Tickets</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-danger">
+                                    High
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ high }}</strong>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    Medium
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ medium }}</strong>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Low
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>{{ low }}</strong>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BACK BUTTON ================= -->
+
+        <div style="margin-top: 25px;">
+
+            <a href="/dashboard" class="btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

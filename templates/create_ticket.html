@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Ticket | IT HelpDesk</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+<div class="wrapper">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <ul>
+
+
+            <!-- Dashboard -->
+
+            <li>
+
+                <a href="/dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Create Ticket -->
+
+            <li class="active">
+
+                <a href="/create-ticket">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <span>Create Ticket</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Tickets -->
+
+            <li>
+
+                <a href="/view-tickets">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span>Tickets</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Users -->
+
+            <li>
+
+                <a href="/users">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Reports -->
+
+            <li>
+
+                <a href="/reports">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Reports</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Settings -->
+
+            <li>
+
+                <a href="/settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- Logout -->
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+
+            <div class="top-left">
+
+                <h2>
+                    Create New Ticket
+                </h2>
+
+                <small>
+                    Submit a new IT support request
+                </small>
+
+            </div>
+
+
+            <div class="top-right">
+
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ session["user_name"] }}
+                        </strong>
+
+                        <small>
+                            {{ session["role"] }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= CREATE TICKET CARD ================= -->
+
+        <div class="settings-card create-ticket-card">
+
+
+            <!-- CARD HEADER -->
+
+            <div class="page-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Ticket Information
+                    </h3>
+
+                    <p>
+                        Provide details about the issue you are facing.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ERROR MESSAGE -->
+
+            {% if error %}
+
+            <div class="alert-error">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <span>
+                    {{ error }}
+                </span>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- ================= FORM ================= -->
+
+            <form method="POST">
+
+
+                <!-- TITLE + CATEGORY -->
+
+                <div class="settings-grid">
+
+
+                    <!-- TITLE -->
+
+                    <div class="form-group">
+
+     
+<label for="title">
+    Ticket Title
+</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="Enter ticket title"
+                            value="{{ request.form.get('title', '') }}"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="category_id">
+
+                            <i class="fa-solid fa-layer-group"></i>
+
+                            Category
+
+                        </label>
+
+
+                        <select
+                            id="category_id"
+                            name="category_id"
+                            required
+                        >
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+
+                            {% for category in categories %}
+
+                            <option
+                                value="{{ category.CategoryID }}"
+                                {% if request.form.get('category_id') == category.CategoryID|string %}
+                                selected
+                                {% endif %}
+                            >
+
+                                {{ category.CategoryName }}
+
+                            </option>
+
+                            {% endfor %}
+
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PRIORITY -->
+
+                <div class="form-group">
+
+                    <label for="priority">
+
+                        <i class="fa-solid fa-flag"></i>
+
+                        Priority
+
+                    </label>
+
+
+                    <select
+                        id="priority"
+                        name="priority"
+                        required
+                    >
+
+                        <option value="">
+                            Select Priority
+                        </option>
+
+
+                        <option
+                            value="Low"
+                            {% if request.form.get('priority') == 'Low' %}
+                            selected
+                            {% endif %}
+                        >
+
+                            Low
+
+                        </option>
+
+
+                        <option
+                            value="Medium"
+                            {% if request.form.get('priority') == 'Medium' %}
+                            selected
+                            {% endif %}
+                        >
+
+                            Medium
+
+                        </option>
+
+
+                        <option
+                            value="High"
+                            {% if request.form.get('priority') == 'High' %}
+                            selected
+                            {% endif %}
+                        >
+
+                            High
+
+                        </option>
+
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+
+                        <i class="fa-solid fa-align-left"></i>
+
+                        Problem Description
+
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Describe your problem in detail..."
+                        required
+                    >{{ request.form.get('description', '') }}</textarea>
+
+                </div>
+
+
+
+                <!-- ================= BUTTONS ================= -->
+
+                <div class="settings-buttons">
+
+
+                    <!-- CREATE -->
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Create Ticket
+
+                    </button>
+
+
+
+                    <!-- CANCEL -->
+
+                    <a
+                        href="/dashboard"
+                        class="cancel-btn"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

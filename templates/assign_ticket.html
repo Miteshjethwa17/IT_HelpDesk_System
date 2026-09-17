@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assign Support Engineer | IT HelpDesk</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+<div class="wrapper">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+        <ul>
+
+            <li>
+
+                <a href="/dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/create-ticket">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <span>Create Ticket</span>
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="/view-tickets">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span>Tickets</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/users">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/reports">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Reports</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <div class="top-left">
+
+                <h2>Assign Support Engineer</h2>
+
+                <small>
+                    Assign a support team member to this ticket
+                </small>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ session["user_name"] }}
+                        </strong>
+
+                        <small>
+                            {{ session["role"] }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ASSIGN CARD ================= -->
+
+        <div class="settings-card assign-ticket-card">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-user-gear"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Assign Support Engineer
+                    </h3>
+
+                    <p>
+                        Select a support engineer who will handle this ticket.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= TICKET INFORMATION ================= -->
+
+            <div class="ticket-info-grid">
+
+
+                <!-- Ticket ID -->
+
+                <div class="ticket-info-item">
+
+                    <span>
+
+                        <i class="fa-solid fa-hashtag"></i>
+
+                        Ticket ID
+
+                    </span>
+
+                    <strong>
+                        #{{ ticket.TicketID }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Ticket Title -->
+
+                <div class="ticket-info-item">
+
+                    <span>
+
+                        <i class="fa-solid fa-ticket"></i>
+
+                        Ticket Title
+
+                    </span>
+
+                    <strong>
+                        {{ ticket.Title }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Current Status -->
+
+                <div class="ticket-info-item">
+
+                    <span>
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Current Status
+
+                    </span>
+
+
+                    {% if ticket.Status == "Open" %}
+
+                        <span class="badge bg-warning">
+                            Open
+                        </span>
+
+                    {% elif ticket.Status == "Pending" %}
+
+                        <span class="badge bg-danger">
+                            Pending
+                        </span>
+
+                    {% elif ticket.Status == "Resolved" %}
+
+                        <span class="badge bg-success">
+                            Resolved
+                        </span>
+
+                    {% elif ticket.Status == "In Progress" %}
+
+                        <span class="badge bg-primary">
+                            In Progress
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            {{ ticket.Status }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= ASSIGN FORM ================= -->
+
+            <form method="POST">
+
+
+                <div class="form-group">
+
+                    <label for="support">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                        Select Support Engineer
+
+                    </label>
+
+
+                    <select
+                        name="support"
+                        id="support"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Support Engineer --
+                        </option>
+
+
+                        {% for support in supports %}
+
+                            <option value="{{ support.UserID }}">
+
+                                {{ support.FullName }}
+
+                            </option>
+
+                        {% endfor %}
+
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================= BUTTONS ================= -->
+
+                <div class="settings-buttons">
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+
+                        <i class="fa-solid fa-user-check"></i>
+
+                        Assign Ticket
+
+                    </button>
+
+
+                    <a
+                        href="/view-tickets"
+                        class="cancel-btn"
+                    >
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to Tickets
+
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

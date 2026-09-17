@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create New User - IT HelpDesk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+<div class="wrapper">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <ul>
+
+            <li>
+
+                <a href="/dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <li class="active">
+
+                <a href="/users">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="top-left">
+
+                <h2>Create New User</h2>
+
+                <small>
+
+                    Add a new Employee or Support Engineer
+
+                </small>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+
+                            {{ session["user_name"] }}
+
+                        </strong>
+
+                        <small>
+
+                            {{ session["role"] }}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= FORM CARD ================= -->
+
+        <div class="card"
+             style="max-width:700px; margin:30px auto;">
+
+
+            <div style="margin-bottom:25px;">
+
+                <h2>
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Add New User
+
+                </h2>
+
+                <p style="color:#64748b;">
+
+                    Create an account for an Employee or Support Engineer.
+
+                </p>
+
+            </div>
+
+
+            <!-- ERROR MESSAGE -->
+
+            {% if error %}
+
+            <div style="
+                background:#fee2e2;
+                color:#991b1b;
+                padding:12px 15px;
+                border-radius:8px;
+                margin-bottom:20px;
+            ">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- FORM -->
+
+            <form method="POST"
+                  action="/create-user">
+
+
+                <!-- FULL NAME -->
+
+                <div style="margin-bottom:20px;">
+
+                    <label>
+
+                        Full Name
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="fullname"
+                        placeholder="Enter full name"
+                        required
+                        style="
+                            width:100%;
+                            padding:12px;
+                            margin-top:8px;
+                            border:1px solid #cbd5e1;
+                            border-radius:8px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div style="margin-bottom:20px;">
+
+                    <label>
+
+                        Email Address
+
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter email address"
+                        required
+                        style="
+                            width:100%;
+                            padding:12px;
+                            margin-top:8px;
+                            border:1px solid #cbd5e1;
+                            border-radius:8px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div style="margin-bottom:20px;">
+
+                    <label>
+
+                        Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                        style="
+                            width:100%;
+                            padding:12px;
+                            margin-top:8px;
+                            border:1px solid #cbd5e1;
+                            border-radius:8px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- ROLE -->
+
+                <div style="margin-bottom:25px;">
+
+                    <label>
+
+                        Select Role
+
+                    </label>
+
+                    <select
+                        name="role"
+                        required
+                        style="
+                            width:100%;
+                            padding:12px;
+                            margin-top:8px;
+                            border:1px solid #cbd5e1;
+                            border-radius:8px;
+                            background:white;
+                        "
+                    >
+
+                        <option value="">
+
+                            Select User Role
+
+                        </option>
+
+                        <option value="Employee">
+
+                            Employee
+
+                        </option>
+
+                        <option value="Support">
+
+                            Support Engineer
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div style="
+                    display:flex;
+                    gap:12px;
+                ">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        Create User
+
+                    </button>
+
+
+                    <a
+                        href="/users"
+                        class="btn"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

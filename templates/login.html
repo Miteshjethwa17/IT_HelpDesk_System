@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | IT Help Desk</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(59,130,246,.18), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(37,99,235,.20), transparent 32%),
+                linear-gradient(135deg, #07152f, #123b82 50%, #2563eb);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background glow */
+
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .35;
+            pointer-events: none;
+        }
+
+        body::before {
+            background: #3b82f6;
+            top: -100px;
+            left: -80px;
+        }
+
+        body::after {
+            background: #60a5fa;
+            bottom: -120px;
+            right: -80px;
+        }
+
+
+        /* Main Container */
+
+        .login-container {
+            width: min(1180px, 100%);
+            min-height: 680px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: rgba(255,255,255,.96);
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 35px 90px rgba(0,0,0,.30),
+                0 10px 30px rgba(0,0,0,.12);
+
+            position: relative;
+            z-index: 2;
+
+            animation: containerShow .7s ease;
+        }
+
+        @keyframes containerShow {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+
+        /* LEFT SIDE */
+
+        .login-left {
+
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 60px 55px;
+
+            color: white;
+
+            background:
+                radial-gradient(circle at 20% 20%, rgba(96,165,250,.35), transparent 28%),
+                radial-gradient(circle at 80% 85%, rgba(147,197,253,.20), transparent 30%),
+                linear-gradient(145deg, #173b91, #2563eb 55%, #1d4ed8);
+
+            overflow: hidden;
+        }
+
+        /* Decorative circles */
+
+        .login-left::before {
+            content: "";
+            position: absolute;
+
+            width: 360px;
+            height: 360px;
+
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+
+            top: -150px;
+            right: -140px;
+        }
+
+        .login-left::after {
+            content: "";
+            position: absolute;
+
+            width: 240px;
+            height: 240px;
+
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 50%;
+
+            bottom: -120px;
+            left: -100px;
+        }
+
+
+        /* Headset */
+
+        .brand-icon {
+
+            width: 105px;
+            height: 105px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 48px;
+
+            border-radius: 28px;
+
+            background: rgba(255,255,255,.14);
+
+            border: 1px solid rgba(255,255,255,.25);
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,.15),
+                inset 0 1px 0 rgba(255,255,255,.25);
+
+            backdrop-filter: blur(12px);
+
+            margin-bottom: 30px;
+
+            animation: floatIcon 3.5s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+
+        .login-left h1 {
+
+            font-size: 42px;
+            font-weight: 750;
+            letter-spacing: -.8px;
+
+            margin-bottom: 10px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-left h3 {
+
+            font-size: 18px;
+            font-weight: 600;
+
+            color: #dbeafe;
+
+            margin-bottom: 22px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-left p {
+
+            max-width: 430px;
+
+            color: #e0ecff;
+
+            font-size: 16px;
+            line-height: 1.8;
+
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* Small status */
+
+        .system-status {
+
+            margin-top: 35px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 10px 17px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.10);
+
+            border: 1px solid rgba(255,255,255,.16);
+
+            color: #eff6ff;
+
+            font-size: 13px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #4ade80;
+
+            box-shadow: 0 0 12px #4ade80;
+        }
+
+
+        /* RIGHT SIDE */
+
+        .login-right {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 55px 65px;
+
+            background: #ffffff;
+        }
+
+        .login-card {
+
+            width: 100%;
+            max-width: 470px;
+        }
+
+
+        /* Heading */
+
+        .welcome-tag {
+
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #2563eb;
+
+            background: #eff6ff;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            margin-bottom: 17px;
+        }
+
+        .login-card h2 {
+
+            color: #172033;
+
+            font-size: 38px;
+            line-height: 1.2;
+
+            font-weight: 750;
+
+            letter-spacing: -.8px;
+
+            margin-bottom: 10px;
+        }
+
+        .login-card > p {
+
+            color: #718096;
+
+            font-size: 16px;
+
+            margin-bottom: 34px;
+        }
+
+
+        /* Input */
+
+        .input-group {
+
+            position: relative;
+
+            margin-bottom: 18px;
+        }
+
+        .input-group > i {
+
+            position: absolute;
+
+            left: 18px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #718096;
+
+            font-size: 17px;
+
+            transition: .25s;
+
+            z-index: 2;
+        }
+
+        .input-group input {
+
+            width: 100%;
+
+            height: 62px;
+
+            border: 1.5px solid #e2e8f0;
+
+            border-radius: 15px;
+
+            padding: 0 52px;
+
+            font-size: 15px;
+
+            color: #1e293b;
+
+            background: #f8fafc;
+
+            outline: none;
+
+            transition:
+                border .25s,
+                box-shadow .25s,
+                background .25s;
+        }
+
+        .input-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .input-group input:focus {
+
+            background: #ffffff;
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 4px rgba(59,130,246,.10);
+        }
+
+        .input-group:focus-within > i {
+            color: #2563eb;
+        }
+
+
+        /* Password Eye */
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 18px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #94a3b8;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: .2s;
+
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color: #2563eb;
+        }
+
+
+        /* Error */
+
+        .alert-error {
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            background: #fff1f2;
+
+            border: 1px solid #fecdd3;
+
+            color: #be123c;
+
+            padding: 12px 14px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            margin: 5px 0 18px;
+        }
+
+
+        /* Login Options */
+
+        .login-options {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin: 7px 0 25px;
+
+            font-size: 14px;
+        }
+
+        .remember-me {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #475569;
+
+            cursor: pointer;
+        }
+
+        .remember-me input {
+
+            width: 16px;
+            height: 16px;
+
+            accent-color: #2563eb;
+
+            cursor: pointer;
+        }
+
+        .forgot-password {
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            transition: .2s;
+        }
+
+        .forgot-password:hover {
+            color: #1d4ed8;
+        }
+
+
+        /* Login Button */
+
+        .login-btn {
+
+            width: 100%;
+
+            height: 62px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg, #2563eb, #1d4ed8);
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            box-shadow:
+                0 12px 25px rgba(37,99,235,.25);
+
+            transition:
+                transform .25s,
+                box-shadow .25s,
+                filter .25s;
+        }
+
+        .login-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 17px 30px rgba(37,99,235,.32);
+
+            filter: brightness(1.04);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+
+        /* Register */
+
+        .register-link {
+
+            text-align: center;
+
+            margin-top: 28px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .register-link a {
+
+            color: #2563eb;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            margin-left: 4px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Footer */
+
+        .footer {
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            margin-top: 35px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #f1f5f9;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            body {
+                padding: 18px;
+                overflow: auto;
+            }
+
+            .login-container {
+                grid-template-columns: 1fr;
+
+                min-height: auto;
+
+                border-radius: 22px;
+            }
+
+            .login-left {
+                padding: 50px 30px;
+            }
+
+            .login-left h1 {
+                font-size: 34px;
+            }
+
+            .login-left p {
+                font-size: 14px;
+            }
+
+            .login-right {
+                padding: 45px 30px;
+            }
+
+            .login-card h2 {
+                font-size: 32px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .login-left {
+                padding: 40px 22px;
+            }
+
+            .brand-icon {
+                width: 85px;
+                height: 85px;
+
+                font-size: 38px;
+
+                border-radius: 22px;
+            }
+
+            .login-left h1 {
+                font-size: 30px;
+            }
+
+            .login-left h3 {
+                font-size: 16px;
+            }
+
+            .login-right {
+                padding: 35px 20px;
+            }
+
+            .login-card h2 {
+                font-size: 29px;
+            }
+
+            .login-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <!-- =========================
+         LEFT BRANDING
+    ========================== -->
+
+    <div class="login-left">
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-headset"></i>
+        </div>
+
+        <h1>IT Help Desk</h1>
+
+        <h3>Ticket Management System</h3>
+
+        <p>
+            Manage support tickets efficiently,
+            assign tasks, monitor progress,
+            generate reports and resolve issues faster.
+        </p>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            Support system online
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         LOGIN
+    ========================== -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div class="welcome-tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                Secure Access
+            </div>
+
+            <h2>Welcome Back 👋</h2>
+
+            <p>
+                Sign in to access your Help Desk dashboard.
+            </p>
+
+
+            <form method="POST" action="/login">
+
+                <!-- Email -->
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required>
+
+                    <span
+                        class="password-toggle"
+                        onclick="togglePassword()"
+                        title="Show / Hide Password">
+
+                        <i
+                            class="fa-solid fa-eye"
+                            id="eye">
+                        </i>
+
+                    </span>
+
+                </div>
+
+
+                <!-- Error -->
+
+                {% if error %}
+
+                <div class="alert-error">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <span>{{ error }}</span>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Options -->
+
+                <div class="login-options">
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            name="remember">
+
+                        <span>Remember Me</span>
+
+                    </label>
+
+                    <a href="/forgot-password" class="forgot-password">
+    Forgot Password?
+</a>
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="login-btn">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    <span>Login to Dashboard</span>
+
+                </button>
+
+            </form>
+
+
+            <!-- Register -->
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <a href="/register">
+                    Create Account
+                </a>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="footer">
+
+                © 2026 IT Help Desk System
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const eye = document.getElementById("eye");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        eye.className = "fa-solid fa-eye-slash";
+
+    } else {
+
+        password.type = "password";
+
+        eye.className = "fa-solid fa-eye";
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
+```

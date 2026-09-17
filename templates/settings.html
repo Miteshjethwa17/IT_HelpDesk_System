@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | IT Help Desk</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body class="{{ 'dark-mode' if theme == 'Dark' else '' }}">
+
+<div class="wrapper">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <ul>
+
+            <li>
+
+                <a href="/dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/create-ticket">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <span>Create Ticket</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/view-tickets">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span>Tickets</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/users">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/reports">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Reports</span>
+
+                </a>
+
+            </li>
+
+
+            <li class="active">
+
+                <a href="/settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+
+            <div>
+
+                <h2>System Settings</h2>
+
+                <small>
+                    Manage your account and application settings
+                </small>
+
+            </div>
+
+
+            <div class="profile">
+
+                <i class="fa-solid fa-circle-user"></i>
+
+                <div>
+
+                    <strong>
+                        {{ session["user_name"] }}
+                    </strong>
+
+                    <small>
+                        {{ session["role"] }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= SUCCESS MESSAGE ================= -->
+
+        {% if message %}
+
+        <div class="alert-success">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            {{ message }}
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- ================= ERROR MESSAGE ================= -->
+
+        {% if error %}
+
+        <div class="alert-error">
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- ================= SETTINGS FORM ================= -->
+
+        <form method="POST">
+
+
+            <!-- ================= PROFILE INFORMATION ================= -->
+
+            <div class="settings-card">
+
+
+                <h3>
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile Information
+
+                </h3>
+
+
+                <div class="settings-grid">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="fullname">
+
+                            Full Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            value="{{ user.FullName }}"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+
+                            Email Address
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="{{ user.Email }}"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= COMPANY INFORMATION ================= -->
+
+            <div class="settings-card">
+
+
+                <h3>
+
+                    <i class="fa-solid fa-building"></i>
+
+                    Company Information
+
+                </h3>
+
+
+                <div class="settings-grid">
+
+
+                    <!-- COMPANY -->
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Company Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            value="IT Help Desk"
+                            readonly
+                        >
+
+                    </div>
+
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label>
+
+                            User Role
+
+                        </label>
+
+                        <input
+                            type="text"
+                            value="{{ user.Role }}"
+                            readonly
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= PREFERENCES ================= -->
+
+            <div class="settings-card">
+
+
+                <h3>
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                    Preferences
+
+                </h3>
+
+
+                <div class="settings-grid">
+
+
+                    <!-- THEME -->
+
+                    <div class="form-group">
+
+                        <label for="theme">
+
+                            <i class="fa-solid fa-palette"></i>
+
+                            Theme
+
+                        </label>
+
+
+                        <select
+                            name="theme"
+                            id="theme"
+                        >
+
+                            <option
+                                value="Light"
+                                {% if theme == "Light" %}
+                                selected
+                                {% endif %}
+                            >
+
+                                Light Mode
+
+                            </option>
+
+
+                            <option
+                                value="Dark"
+                                {% if theme == "Dark" %}
+                                selected
+                                {% endif %}
+                            >
+
+                                Dark Mode
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- DEFAULT PRIORITY -->
+
+                    <div class="form-group">
+
+                        <label for="default_priority">
+
+                            <i class="fa-solid fa-flag"></i>
+
+                            Default Ticket Priority
+
+                        </label>
+
+
+                        <select
+                            name="default_priority"
+                            id="default_priority"
+                        >
+
+                            <option value="High">
+
+                                High
+
+                            </option>
+
+
+                            <option
+                                value="Medium"
+                                selected
+                            >
+
+                                Medium
+
+                            </option>
+
+
+                            <option value="Low">
+
+                                Low
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= SECURITY ================= -->
+
+            <div class="settings-card">
+
+
+                <h3>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Change Password
+
+                </h3>
+
+
+                <div class="settings-grid">
+
+
+                    <!-- CURRENT PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="current_password">
+
+                            Current Password
+
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="current_password"
+                            name="current_password"
+                            placeholder="Enter current password"
+                        >
+
+                    </div>
+
+
+
+                    <!-- NEW PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="new_password">
+
+                            New Password
+
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="new_password"
+                            name="new_password"
+                            placeholder="Enter new password"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= BUTTONS ================= -->
+
+            <div class="settings-buttons">
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Save Changes
+
+                </button>
+
+
+
+                <button
+                    type="reset"
+                    class="cancel-btn"
+                >
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ================= DARK MODE ================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const themeSelect = document.getElementById("theme");
+
+    if (themeSelect) {
+
+        themeSelect.addEventListener("change", function () {
+
+            if (this.value === "Dark") {
+
+                document.body.classList.add("dark-mode");
+
+            } else {
+
+                document.body.classList.remove("dark-mode");
+
+            }
+
+        });
+
+    }
+
+});
+
+</script>
+
+
+</body>
+
+</html>

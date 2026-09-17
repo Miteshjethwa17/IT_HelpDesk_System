@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | IT Help Desk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="login-page">
+
+<div class="login-container">
+
+    <!-- LEFT -->
+
+    <div class="login-left">
+
+        <i class="fa-solid fa-user-plus"></i>
+
+        <h1>Create Account</h1>
+
+        <h3>IT Help Desk</h3>
+
+        <p>
+
+            Create your employee account to raise
+            support tickets and track their progress.
+
+        </p>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <h2>Register</h2>
+
+            <p>Create your account</p>
+
+            <form method="POST">
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                        type="text"
+                        name="fullname"
+                        placeholder="Full Name"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirm Password"
+                        required>
+
+                </div>
+
+                {% if error %}
+
+                <div class="alert-error">
+
+                    {{ error }}
+
+                </div>
+
+                {% endif %}
+
+                <button class="login-btn">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+            <div class="register-link">
+
+                Already have an account?
+
+                <a href="/login">
+
+                    Login
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

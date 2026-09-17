@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Ticket | IT HelpDesk</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="wrapper">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-headset"></i>
+
+            <span>HelpDesk</span>
+
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="/dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+            </li>
+
+
+            <li>
+                <a href="/create-ticket">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <span>Create Ticket</span>
+
+                </a>
+            </li>
+
+
+            <li class="active">
+
+                <a href="/view-tickets">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span>Tickets</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/users">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/reports">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Reports</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+
+            <div class="top-left">
+
+                <h2>
+                    Edit Ticket
+                </h2>
+
+                <small>
+                    Update ticket details and status
+                </small>
+
+            </div>
+
+
+            <div class="top-right">
+
+
+                <div class="profile">
+
+                    <i class="fa-solid fa-circle-user"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ session["user_name"] }}
+                        </strong>
+
+                        <small>
+                            {{ session["role"] }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= EDIT TICKET CARD ================= -->
+
+        <div class="settings-card edit-ticket-card">
+
+
+            <!-- CARD HEADER -->
+
+            <div class="page-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Update Ticket
+                    </h3>
+
+                    <p>
+                        Modify the ticket information below and save your changes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TICKET ID -->
+
+            <div class="ticket-id-box">
+
+                <i class="fa-solid fa-hashtag"></i>
+
+                Ticket ID:
+
+                <strong>
+                    {{ ticket.TicketID }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- FORM -->
+
+            <form method="POST">
+
+
+                <!-- TITLE -->
+
+                <div class="form-group">
+
+                    <label for="title">
+    Ticket Title
+</label>
+
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{ ticket.Title }}"
+                        placeholder="Enter ticket title"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+
+                        <i class="fa-solid fa-align-left"></i>
+
+                        Description
+
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Enter ticket description"
+                        required
+                    >{{ ticket.Description }}</textarea>
+
+                </div>
+
+
+
+                <!-- PRIORITY + STATUS -->
+
+                <div class="settings-grid">
+
+
+                    <!-- PRIORITY -->
+
+                    <div class="form-group">
+
+                        <label for="priority">
+
+                            <i class="fa-solid fa-flag"></i>
+
+                            Priority
+
+                        </label>
+
+
+                        <select
+                            id="priority"
+                            name="priority"
+                            required
+                        >
+
+                            <option
+                                value="High"
+                                {% if ticket.Priority == "High" %}selected{% endif %}
+                            >
+                                High
+                            </option>
+
+
+                            <option
+                                value="Medium"
+                                {% if ticket.Priority == "Medium" %}selected{% endif %}
+                            >
+                                Medium
+                            </option>
+
+
+                            <option
+                                value="Low"
+                                {% if ticket.Priority == "Low" %}selected{% endif %}
+                            >
+                                Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="form-group">
+
+                        <label for="status">
+
+                            <i class="fa-solid fa-circle-half-stroke"></i>
+
+                            Status
+
+                        </label>
+
+
+                        <select
+                            id="status"
+                            name="status"
+                            required
+                        >
+
+                            <option
+                                value="Open"
+                                {% if ticket.Status == "Open" %}selected{% endif %}
+                            >
+                                Open
+                            </option>
+
+
+                            <option
+                                value="Pending"
+                                {% if ticket.Status == "Pending" %}selected{% endif %}
+                            >
+                                Pending
+                            </option>
+
+
+                            <option
+                                value="In Progress"
+                                {% if ticket.Status == "In Progress" %}selected{% endif %}
+                            >
+                                In Progress
+                            </option>
+
+
+                            <option
+                                value="Resolved"
+                                {% if ticket.Status == "Resolved" %}selected{% endif %}
+                            >
+                                Resolved
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="settings-buttons">
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Update Ticket
+
+                    </button>
+
+
+
+                    <a
+                        href="/view-tickets"
+                        class="cancel-btn"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
